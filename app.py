@@ -1,22 +1,26 @@
 import streamlit as st
 
-# ---------------------- CONFIG ----------------------
+# ==================================================
+# KONFIGURASI HALAMAN
+# ==================================================
 st.set_page_config(page_title="ClusMath", page_icon="🌿", layout="centered")
 
-# ---------------------- CSS HIJAU ----------------------
+# ==================================================
+# CSS NUANSA HIJAU
+# ==================================================
 st.markdown("""
 <style>
-.stApp {
-    background: linear-gradient(135deg,#d9fdd3,#b8f2b2,#95e28f);
+.stApp{
+    background: linear-gradient(135deg,#d8f3dc,#b7e4c7,#95d5b2);
     background-attachment: fixed;
 }
 
-h1,h2,h3,h4,h5,h6,p,label,div {
-    color:#103d10 !important;
+h1,h2,h3,h4,h5,h6,p,label,div{
+    color:#1b4332 !important;
 }
 
-.stButton>button {
-    background-color:#2e8b57;
+.stButton>button{
+    background:#2d6a4f;
     color:white;
     border:none;
     border-radius:10px;
@@ -24,18 +28,21 @@ h1,h2,h3,h4,h5,h6,p,label,div {
     font-weight:bold;
 }
 
-.stButton>button:hover {
-    background-color:#1f6b43;
+.stButton>button:hover{
+    background:#1b4332;
+    color:white;
 }
 
-.stTextInput input {
+.stTextInput input{
+    border:2px solid #2d6a4f;
     border-radius:10px;
-    border:2px solid #2e8b57;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------------- SESSION ----------------------
+# ==================================================
+# SESSION STATE
+# ==================================================
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
@@ -48,9 +55,11 @@ if "started" not in st.session_state:
 if "answers" not in st.session_state:
     st.session_state.answers = {}
 
-# ---------------------- DATA SOAL ----------------------
+# ==================================================
+# DATA SOAL 30
+# ==================================================
 questions = {
-1: [
+1:[
 ("Saat mencoba alat atau aplikasi baru, saya biasanya:",
 "A. Membaca panduan atau melihat gambar petunjuknya",
 "B. Mendengarkan penjelasan dari orang lain",
@@ -75,9 +84,7 @@ questions = {
 "A. Saya lebih paham jika melihat contoh",
 "B. Saya lebih paham jika dijelaskan",
 "C. Saya lebih paham jika langsung mencoba"),
-],
 
-2: [
 ("Di waktu senggang, saya lebih suka:",
 "A. Melihat-lihat gambar, film, atau membaca",
 "B. Mendengarkan musik atau ngobrol",
@@ -104,7 +111,7 @@ questions = {
 "C. Praktik langsung"),
 ],
 
-3: [
+2:[
 ("Saat memilih makanan di menu:",
 "A. Membayangkan tampilannya",
 "B. Meminta rekomendasi pelayan",
@@ -129,10 +136,89 @@ questions = {
 "A. Melihat",
 "B. Mendengar",
 "C. Melakukan"),
+
+("Saat merasa tegang:",
+"A. Membayangkan berbagai kemungkinan",
+"B. Banyak berpikir dan berdialog dalam pikiran",
+"C. Gelisah dan banyak bergerak"),
+
+("Saya mengingat seseorang dari:",
+"A. Wajahnya",
+"B. Suaranya",
+"C. Cara berinteraksi"),
+
+("Saat hasil belajar kurang baik:",
+"A. Membuat catatan baru",
+"B. Mendiskusikan dengan orang lain",
+"C. Latihan ulang"),
+
+("Saat menjelaskan ide:",
+"A. Menggunakan gambar atau contoh",
+"B. Menjelaskan dengan kata-kata",
+"C. Mengajak langsung mencoba"),
+
+("Aktivitas favorit:",
+"A. Menonton atau melihat sesuatu",
+"B. Mendengarkan musik/cerita",
+"C. Bergerak atau beraktivitas"),
+],
+
+3:[
+("Waktu luang saya biasanya:",
+"A. Menonton atau membaca",
+"B. Mengobrol",
+"C. Beraktivitas fisik"),
+
+("Saat bertemu orang baru:",
+"A. Memperhatikan penampilan",
+"B. Mendengarkan cara bicara",
+"C. Mengajak melakukan sesuatu"),
+
+("Saya menilai orang dari:",
+"A. Penampilan",
+"B. Cara berbicara",
+"C. Perilaku"),
+
+("Saat marah:",
+"A. Terus teringat kejadian",
+"B. Mengungkapkan lewat kata-kata",
+"C. Menunjukkan dengan tindakan"),
+
+("Saya lebih mudah mengingat:",
+"A. Wajah",
+"B. Nama",
+"C. Pengalaman"),
+
+("Saya tahu orang berbohong jika:",
+"A. Menghindari tatapan",
+"B. Nada suara berubah",
+"C. Gerak tubuh aneh"),
+
+("Saat bertemu teman lama:",
+"A. Tersenyum dan melihat mereka",
+"B. Mengobrol panjang",
+"C. Berjabat tangan atau memeluk"),
+
+("Cara saya mengingat:",
+"A. Menulis",
+"B. Mengucapkan",
+"C. Mempraktikkan"),
+
+("Jika komplain barang:",
+"A. Menulis pesan",
+"B. Menelepon",
+"C. Datang langsung"),
+
+("Saya sering mengatakan:",
+"A. Saya melihat maksudmu",
+"B. Saya mengerti yang kamu katakan",
+"C. Saya merasakan maksudmu"),
 ]
 }
 
-# ---------------------- HOME ----------------------
+# ==================================================
+# HALAMAN HOME
+# ==================================================
 if st.session_state.page == "home":
 
     st.title("ClusMath")
@@ -148,11 +234,13 @@ if st.session_state.page == "home":
         else:
             st.warning("Isi nama dan kelas terlebih dahulu.")
 
-# ---------------------- TES ----------------------
+# ==================================================
+# HALAMAN TES
+# ==================================================
 elif st.session_state.page == "tes":
 
     st.title("TES GAYA BELAJAR")
-    st.write("Pilih jawaban yang paling menggambarkan dirimu.")
+    st.write("Petunjuk: Pilih jawaban yang paling menggambarkan dirimu.")
 
     if not st.session_state.started:
         if st.button("START"):
@@ -163,34 +251,34 @@ elif st.session_state.page == "tes":
         sec = st.session_state.section
         st.header(f"Bagian {sec}")
 
-        nomor = (sec - 1) * 5 + 1
+        nomor = (sec-1)*10 + 1
 
         for i, soal in enumerate(questions[sec], start=nomor):
-            q, a, b, c = soal
 
-            jawab = st.radio(
-                q,
-                [a, b, c],
-                key=f"q{i}"
-            )
+            q,a,b,c = soal
 
-            if jawab == a:
-                st.session_state.answers[i] = "A"
-            elif jawab == b:
-                st.session_state.answers[i] = "B"
+            pilih = st.radio(q,[a,b,c],key=f"q{i}")
+
+            if pilih == a:
+                st.session_state.answers[i]="A"
+            elif pilih == b:
+                st.session_state.answers[i]="B"
             else:
-                st.session_state.answers[i] = "C"
+                st.session_state.answers[i]="C"
 
         if sec < 3:
             if st.button("NEXT"):
                 st.session_state.section += 1
                 st.rerun()
+
         else:
             if st.button("FINISH"):
-                st.session_state.page = "hasil"
+                st.session_state.page="hasil"
                 st.rerun()
 
-# ---------------------- HASIL ----------------------
+# ==================================================
+# HALAMAN HASIL
+# ==================================================
 elif st.session_state.page == "hasil":
 
     st.success("Horeee, kamu telah menyelesaikan tes gaya belajar 🎉")
@@ -205,16 +293,18 @@ elif st.session_state.page == "hasil":
 
         if a >= b and a >= c:
             gaya = "VISUAL"
-            desc = "Belajar lebih mudah dengan melihat gambar, tulisan, diagram, warna."
+            ket = "Belajar lebih mudah dengan melihat (gambar, tulisan, diagram, warna)."
+
         elif b >= a and b >= c:
             gaya = "AUDITORI"
-            desc = "Belajar lebih mudah dengan mendengar penjelasan guru, diskusi, rekaman suara."
+            ket = "Belajar lebih mudah dengan mendengar (penjelasan guru, diskusi, rekaman suara)."
+
         else:
             gaya = "KINESTETIK"
-            desc = "Belajar lebih mudah dengan melakukan langsung, praktik, percobaan."
+            ket = "Belajar lebih mudah dengan melakukan langsung (praktik, percobaan, aktivitas fisik)."
 
         st.subheader(f"Gaya belajarmu: {gaya}")
-        st.write(desc)
+        st.write(ket)
 
         st.info("Setiap orang punya cara belajar yang berbeda, ada yang lebih paham kalau melihat, mendengar, atau langsung mencoba.")
 

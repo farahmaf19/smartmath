@@ -2,6 +2,39 @@ import streamlit as st
 
 st.set_page_config(page_title='ClusMath', page_icon='🌿', layout='centered')
 
+# BACKGROUND HIJAU
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(135deg, #d4f5d0, #a8e6a3, #7bc96f);
+    background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6, p, label, div {
+    color: #103d10 !important;
+}
+
+.stButton>button {
+    background-color: #2e8b57;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.stButton>button:hover {
+    background-color: #246b45;
+    color: white;
+}
+
+.stTextInput>div>div>input {
+    border-radius: 10px;
+    border: 2px solid #2e8b57;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Session state
 for k,v in {'page':'home','started':False,'section':1,'answers':{}}.items():
     if k not in st.session_state:

@@ -1,13 +1,9 @@
 import streamlit as st
 
-# ---------------- CONFIG ----------------
-st.set_page_config(
-    page_title="ClusMath",
-    page_icon="🌿",
-    layout="centered"
-)
+# ---------------------- CONFIG ----------------------
+st.set_page_config(page_title="ClusMath", page_icon="🌿", layout="centered")
 
-# ---------------- CSS HIJAU ----------------
+# ---------------------- CSS HIJAU ----------------------
 st.markdown("""
 <style>
 .stApp {
@@ -23,113 +19,140 @@ h1,h2,h3,h4,h5,h6,p,label,div {
     background-color:#2e8b57;
     color:white;
     border:none;
-    border-radius:12px;
+    border-radius:10px;
     padding:10px 18px;
     font-weight:bold;
 }
 
 .stButton>button:hover {
     background-color:#1f6b43;
-    color:white;
 }
 
 .stTextInput input {
+    border-radius:10px;
     border:2px solid #2e8b57;
-    border-radius:10px;
-}
-
-[data-baseweb="radio"] {
-    background-color: rgba(255,255,255,0.4);
-    padding:8px;
-    border-radius:10px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- SESSION ----------------
-default_state = {
-    "page": "home",
-    "started": False,
-    "section": 1,
-    "answers": {}
-}
+# ---------------------- SESSION ----------------------
+if "page" not in st.session_state:
+    st.session_state.page = "home"
 
-for k,v in default_state.items():
-    if k not in st.session_state:
-        st.session_state[k] = v
+if "section" not in st.session_state:
+    st.session_state.section = 1
 
-# ---------------- SOAL ----------------
+if "started" not in st.session_state:
+    st.session_state.started = False
+
+if "answers" not in st.session_state:
+    st.session_state.answers = {}
+
+# ---------------------- DATA SOAL ----------------------
 questions = {
-1:[
-"Saat mencoba alat atau aplikasi baru, saya biasanya:",
-"Jika pergi ke tempat yang belum pernah dikunjungi:",
-"Saat belajar resep masakan baru:",
-"Ketika menjelaskan sesuatu ke orang lain:",
-"Jika diberi instruksi:",
-"Di waktu senggang, saya lebih suka:",
-"Saat membeli pakaian:",
-"Saat merencanakan perjalanan:",
-"Saat ingin membeli barang mahal:",
-"Saat belajar hal baru:"
+1: [
+("Saat mencoba alat atau aplikasi baru, saya biasanya:",
+"A. Membaca panduan atau melihat gambar petunjuknya",
+"B. Mendengarkan penjelasan dari orang lain",
+"C. Langsung mencoba dan belajar sambil praktik"),
+
+("Jika pergi ke tempat yang belum pernah dikunjungi:",
+"A. Saya melihat peta atau rute di aplikasi",
+"B. Saya bertanya arah kepada orang lain",
+"C. Saya mengikuti insting sambil mencoba jalan sendiri"),
+
+("Saat belajar resep masakan baru:",
+"A. Mengikuti langkah tertulis dengan detail",
+"B. Mendengarkan arahan dari orang yang lebih ahli",
+"C. Memasak sambil mencoba dan menyesuaikan sendiri"),
+
+("Ketika menjelaskan sesuatu ke orang lain:",
+"A. Saya menuliskan atau menggambarkannya",
+"B. Saya menjelaskan dengan kata-kata",
+"C. Saya memperagakan langsung"),
+
+("Jika diberi instruksi:",
+"A. Saya lebih paham jika melihat contoh",
+"B. Saya lebih paham jika dijelaskan",
+"C. Saya lebih paham jika langsung mencoba"),
 ],
 
-2:[
-"Saat memilih makanan di menu:",
-"Saat menonton konser:",
-"Saat berpikir serius:",
-"Saat memilih barang:",
-"Saya paling mudah belajar dengan:",
-"Saat merasa tegang:",
-"Saya mengingat seseorang dari:",
-"Saat hasil belajar kurang baik:",
-"Saat menjelaskan ide:",
-"Aktivitas favorit:"
+2: [
+("Di waktu senggang, saya lebih suka:",
+"A. Melihat-lihat gambar, film, atau membaca",
+"B. Mendengarkan musik atau ngobrol",
+"C. Beraktivitas fisik atau membuat sesuatu"),
+
+("Saat membeli pakaian:",
+"A. Saya memperhatikan warna dan modelnya",
+"B. Saya bertanya pendapat orang lain",
+"C. Saya mencoba langsung"),
+
+("Saat merencanakan perjalanan:",
+"A. Mencari referensi visual (foto/tempat)",
+"B. Mendengar cerita atau rekomendasi orang",
+"C. Membayangkan aktivitas yang akan dilakukan"),
+
+("Saat ingin membeli barang mahal:",
+"A. Membaca review atau melihat gambar produk",
+"B. Berdiskusi dengan orang lain",
+"C. Mencoba langsung barang tersebut"),
+
+("Saat belajar hal baru:",
+"A. Melihat contoh terlebih dahulu",
+"B. Mendengarkan penjelasan",
+"C. Praktik langsung"),
 ],
 
-3:[
-"Waktu luang saya biasanya:",
-"Saat bertemu orang baru:",
-"Saya menilai orang dari:",
-"Saat marah:",
-"Saya lebih mudah mengingat:",
-"Saya tahu orang berbohong jika:",
-"Saat bertemu teman lama:",
-"Cara saya mengingat:",
-"Jika komplain barang:",
-"Saya sering mengatakan:"
+3: [
+("Saat memilih makanan di menu:",
+"A. Membayangkan tampilannya",
+"B. Meminta rekomendasi pelayan",
+"C. Membayangkan rasa atau sensasinya"),
+
+("Saat menonton konser:",
+"A. Fokus pada tampilan panggung",
+"B. Menikmati suara dan lirik",
+"C. Ikut bergerak mengikuti musik"),
+
+("Saat berpikir serius:",
+"A. Membayangkan gambar atau tulisan",
+"B. Mengulang kata-kata di pikiran",
+"C. Banyak bergerak atau memainkan benda"),
+
+("Saat memilih barang:",
+"A. Melihat desainnya",
+"B. Mendengar penjelasan penjual",
+"C. Menyentuh dan merasakannya"),
+
+("Saya paling mudah belajar dengan:",
+"A. Melihat",
+"B. Mendengar",
+"C. Melakukan"),
 ]
 }
 
-# ---------------- PILIHAN ----------------
-choices = [
-"A = Visual (lebih suka melihat gambar/tulisan)",
-"B = Auditori (lebih suka mendengar penjelasan)",
-"C = Kinestetik (lebih suka praktik langsung)"
-]
-
-# ---------------- HALAMAN HOME ----------------
+# ---------------------- HOME ----------------------
 if st.session_state.page == "home":
 
     st.title("ClusMath")
     st.subheader("🌿 Smart E-LKPD Aritmetika Sosial 🌿")
 
-    st.write("Silakan isi identitas terlebih dahulu.")
-
-    nama = st.text_input("Nama", key="nama")
-    kelas = st.text_input("Kelas", key="kelas")
+    nama = st.text_input("Nama")
+    kelas = st.text_input("Kelas")
 
     if st.button("MASUK"):
         if nama and kelas:
-            st.session_state.page = "vak"
+            st.session_state.page = "tes"
             st.rerun()
         else:
             st.warning("Isi nama dan kelas terlebih dahulu.")
 
-# ---------------- HALAMAN TES ----------------
-elif st.session_state.page == "vak":
+# ---------------------- TES ----------------------
+elif st.session_state.page == "tes":
 
     st.title("TES GAYA BELAJAR")
-    st.write("Petunjuk: Pilih jawaban yang paling menggambarkan dirimu. Tidak ada jawaban benar atau salah.")
+    st.write("Pilih jawaban yang paling menggambarkan dirimu.")
 
     if not st.session_state.started:
         if st.button("START"):
@@ -140,37 +163,35 @@ elif st.session_state.page == "vak":
         sec = st.session_state.section
         st.header(f"Bagian {sec}")
 
-        start_num = (sec-1)*10 + 1
+        nomor = (sec - 1) * 5 + 1
 
-        for i,q in enumerate(questions[sec], start=start_num):
-            jawaban = st.radio(
+        for i, soal in enumerate(questions[sec], start=nomor):
+            q, a, b, c = soal
+
+            jawab = st.radio(
                 q,
-                choices,
+                [a, b, c],
                 key=f"q{i}"
             )
 
-            if jawaban.startswith("A"):
+            if jawab == a:
                 st.session_state.answers[i] = "A"
-            elif jawaban.startswith("B"):
+            elif jawab == b:
                 st.session_state.answers[i] = "B"
             else:
                 st.session_state.answers[i] = "C"
 
-        col1,col2 = st.columns(2)
-
         if sec < 3:
-            with col2:
-                if st.button("NEXT"):
-                    st.session_state.section += 1
-                    st.rerun()
-
+            if st.button("NEXT"):
+                st.session_state.section += 1
+                st.rerun()
         else:
             if st.button("FINISH"):
-                st.session_state.page = "result"
+                st.session_state.page = "hasil"
                 st.rerun()
 
-# ---------------- HASIL ----------------
-elif st.session_state.page == "result":
+# ---------------------- HASIL ----------------------
+elif st.session_state.page == "hasil":
 
     st.success("Horeee, kamu telah menyelesaikan tes gaya belajar 🎉")
 
@@ -184,16 +205,16 @@ elif st.session_state.page == "result":
 
         if a >= b and a >= c:
             gaya = "VISUAL"
-            ket = "Belajar lebih mudah dengan melihat gambar, tulisan, warna, diagram."
+            desc = "Belajar lebih mudah dengan melihat gambar, tulisan, diagram, warna."
         elif b >= a and b >= c:
             gaya = "AUDITORI"
-            ket = "Belajar lebih mudah dengan mendengar penjelasan guru, diskusi, rekaman suara."
+            desc = "Belajar lebih mudah dengan mendengar penjelasan guru, diskusi, rekaman suara."
         else:
             gaya = "KINESTETIK"
-            ket = "Belajar lebih mudah dengan praktik langsung, percobaan, dan aktivitas fisik."
+            desc = "Belajar lebih mudah dengan melakukan langsung, praktik, percobaan."
 
         st.subheader(f"Gaya belajarmu: {gaya}")
-        st.write(ket)
+        st.write(desc)
 
         st.info("Setiap orang punya cara belajar yang berbeda, ada yang lebih paham kalau melihat, mendengar, atau langsung mencoba.")
 

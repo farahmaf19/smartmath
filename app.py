@@ -52,10 +52,7 @@ elif st.session_state.page=='vak':
         sec=st.session_state.section
         st.header(f'Bagian {sec}')
         for i,q in enumerate(questions[sec], start=(sec-1)*10+1):
-            resp = st.radio(q, ['-- Pilih jawaban --','A','B','C'], key=f'q{i}', horizontal=True)
-            if resp == '-- Pilih jawaban --':
-                resp = None
-            st.session_state.answers[i]=resp
+            st.session_state.answers[i]=st.radio(q, ['A','B','C'], key=f'q{i}', horizontal=True)
         c1,c2=st.columns(2)
         if sec<3:
             with c2:
